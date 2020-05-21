@@ -1,0 +1,34 @@
+<%= link_to "Listings Home", listings_path%>
+
+<h1><%= @listing.title %></h1>
+
+<h2>Description</h2>
+<p><%= @listing.description %></p>
+
+<%= image_tag @listing.picture if @listing.picture.attached? %>
+<br>
+
+<button data-stripe="payment">
+  Buy now <%= number_to_currency(@listing.price) %>
+</button>
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+  document
+    .querySelector("[data-stripe='payment']")
+    .addEventListener("click", () => {
+      const stripe = Stripe(
+        "<%= Rails.application.credentials.dig(:stripe, :public_key) %>"
+      );
+
+      stripe.redirectToCheckout({
+        sessionId: "<%= @session_id %>"
+      });
+    });
+</script>
+
+<% if current_user.id == @listing.user_id%>
+    <%= link_to "edit", edit_listing_path(@listing.id), class: "icon" %>
+    <%= submit_tag "delete", class: "icon" %>
+<% end %>

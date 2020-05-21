@@ -1,0 +1,38 @@
+<h1> Llaced shoe marketplace </h1>
+
+<%= link_to "create listing", new_listing_path %>
+<br/>
+<br/>
+<br/>
+
+
+ <div class="listings">
+
+    <% for listing in @listings %>
+    <div class="listing">
+        <%= image_tag listing.picture if listing.picture.attached? %>
+        <div class="info">
+            <div class="info-bar">
+                <div>$<%= listing.price %> </div>
+            </div>
+            <%= link_to listing.title, listing_path(listing.id)%>
+            <div> <%= listing.description %> </div>
+            <%= link_to "view", listing_path(listing) %>
+                        <br/>
+
+        </div>
+
+        <% if current_user.id == listing.user_id %>
+
+
+
+            <%= form_with model: listing, local: true, method: "delete" do |form| %>
+                <div class="modify-icons" >
+                    <%= submit_tag "delete", class: "icon" %>
+                    <%= link_to "edit", edit_listing_path(listing.id), class: "icon" %>
+                </div>
+            <% end %>
+        <% end %>
+    </div>
+<% end %>
+</div>
