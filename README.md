@@ -1,6 +1,6 @@
 # My 2 way market place template
 
-Link to the deployed app: https://ancient-savannah-54182.herokuapp.com/ 
+Link to the deployed app: https://blooming-basin-18491.herokuapp.com/ 
 Link to github repo: https://github.com/Harrisonp365/HpowellT2A2 (Submitted project) https://github.com/Harrisonp365/llacedv2 (project I didnt get to finish was unable to migrate orders model due to AWS IAM keys, this suited the ERD but I was unable to finish.) https://github.com/Harrisonp365/llaced (This was the original I started)
 
 ## Section 1: Requirement checklist 
@@ -85,14 +85,23 @@ Selling shoes has become a massive market for people to buy shoes and sell them 
 The main model for my application is the User model, the user model is the one that has_many listings meaning that a user can have as many listings as the like. These listings are also dependant meaning if the user were to be deleted then so would the listings which are associated with that user. This helps prevent any ophaned listings. Listings then belongs to not only the user but also the category and brand models and it uses their foriegn keys to have a brand and category. A listing also has attached photos but they are not part of the schema as I am able to store them using S3 which is much better, faster and not considered bad practice. My listings also must have a title, description and price otherwise a user will not be able to post it this is due to the validation and presence must be true. This means all of the ad's on the applciation will have some form of description to help users see what they are looking for. The final models are both identical in that both the brands and cateogries models have many listings, this enables all the listings in the database to have a brand or category.  
 
 ##### 5. Discuss the database relations to be implemented.
-![This is an image of your ERD](This is the relative path to it)
+![This is an image of your ERD](Docs/ERD/ERD.png)
 * Provides coherent discussion of the database relations, with reference to the ERD
+I wanted the Brand, Categories and Locations not to be reliant on anything. Brand and Categories both only have a name coloumn and from here they use forigen keys to link to the Products table. This is almost identical for the location table but it has 2 columns. I wanted the locations table to be independant from the user incase the user was to sell an item for someone else from a different address, this way they are not locking in and have more flexabiltiy, it also allows a user to post a listing without a location incase they really wanted and item and are happy to ship it no matter what the cost. The items can all have 0 or many products, but the products can only have one of each. Users can also have 0 or many products the same way they can have 0 or many orders but a product can only have one user. An order can only have one user but many products and a product can also only have one order. 
 
 
 
 ##### 6. Provide your database schema design.
 * Flawless, complex, complete, and well thought through ERDs provided
-Brand 
+Brand and category will have many products and will both have text data types.
+Locations will have many products. Postcode will be an integer and address will be text.
+
+Products will have a Product ID for orders, a user ID as a reference for orders. It will have the category and brancd ID as a reference. A title and description both will be text. Price will be an integer. Location ID will only show postcode so only an integer and finally sold which will be a boolean value.
+
+Orders will have a user and buyer ID both as references. It will also have a Product ID as refernce and a Paid status which will be a boolean value.
+
+Users will have a primary key. Name, email and password will all be text values and a created at timestamp. I will use the timestamp for the dashboard feature.
+ 
 
 ##### 7. Provide User stories for your App.
 ![This is an image of your user stories](This is the relative path to it)
@@ -140,31 +149,4 @@ After this it was all programing, building the models and controllers, from ther
 ![This is an image of your ERD](Docs/ERD/ERD.png)
 * Meets D with no duplication and ideal definition of entities.
 
-## Section 3: Code specific assessment. 
-
-This section can be deleted from the readme. I have only included it here to draw your attention to it. 
-
-##### 11. Model implementation represents a normalised database model.
-* Meets D with no duplication and ideal model implementation.
-
-##### 12. Model implementation represents a normalised database model.
-* Meets D and represents a highly optimised solution.
-
-##### 13. Implemented controllers demonstrate correct use of commands to query the database infrastructure.
-* Meets D and does so elegantly (queries chosen are the most elegant to achieve the result).
-
-##### 14. Queries implemented provide correct data for the given scenario.
-* Meets CR and demonstrates exceptional understanding of database queries.
-
-##### 15. Code comments demonstrate how the queries implemented correctly represent the database structure.
-* Meets D and all comments are exceptionally written.
-
-##### 16. Identify and use appropriate model methods.
-* Identifies and uses appropriate model methods for querying on self and its relationships, extends models scope where appropriate
-
-##### 17. Minimising database calls needed to perform an action.
-* Minimise all database calls and implement eager loading where appropriate
-
-##### 18. Sanitise and validates input to maintain data integrity.
-* Validates and sanitises all input
 
